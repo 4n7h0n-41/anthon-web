@@ -1,0 +1,21 @@
+{
+  "name": "postgres",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Nikodem Wrona",
+  "license": "MIT",
+  "scripts": {
+    "prisma:status": "prisma migrate status --schema=./prisma/schema.prisma",
+    "prisma:migrate:prod": "prisma migrate deploy --schema=./prisma/schema.prisma",
+    "primsa:migrate:dev": "prisma migrate dev --schema=./prisma/schema.prisma"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.19",
+    "prisma": "^5.9.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.9.1"
+  }
+}

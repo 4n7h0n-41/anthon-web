@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model salaries_log {
+  id             String   @id @default(uuid()) @db.Uuid
+  month          Int
+  year           Int
+  currency       String   @db.VarChar(3)
+  rate           Float
+  amount         Float
+  employer       String   @db.VarChar(100)
+  created_at     DateTime @default(dbgenerated("CURRENT_DATE")) @db.Date
+  transferred_at DateTime @default(dbgenerated("CURRENT_DATE")) @db.Date
+  user_id        String   @db.Uuid
+  users          users    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model taxes_log {
+  id             String   @id @default(uuid()) @db.Uuid
+  month          Int
+  year           Int
+  amount         Float
+  created_at     DateTime @default(dbgenerated("CURRENT_DATE")) @db.Date
+  transferred_at DateTime @default(dbgenerated("CURRENT_DATE")) @db.Date
+  tax_type       tax_type
+  user_id        String   @db.Uuid
+  users          users    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model users {
+  id           String         @id @default(uuid()) @db.Uuid
+  email        String         @unique @db.VarChar(255)
+  password     String         @db.VarChar(255)
+  created_at   DateTime       @default(dbgenerated("CURRENT_DATE")) @db.Date
+  updated_at   DateTime       @default(dbgenerated("CURRENT_DATE")) @db.Date
+  salaries_log salaries_log[]
+  taxes_log    taxes_log[]
+}
+
+enum tax_type {
+  INCOME
+  INSURANCE
+}
